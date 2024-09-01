@@ -1,6 +1,6 @@
 const generatePdf = require('../utils/pdfGenerator');
 const fs = require('fs');
-const path = require('path');
+require('path');
 
 const generatePdfController = async (ctx) => {
     try {
