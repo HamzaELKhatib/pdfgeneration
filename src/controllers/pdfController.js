@@ -17,6 +17,7 @@ const generatePdfController = async (ctx) => {
         ctx.set('Content-Disposition', 'attachment; filename=webpage.pdf');
         ctx.body = fs.createReadStream(filePath);
 
+        // Delete the file after sending the response
         ctx.res.on('finish', () => {
             fs.unlink(filePath, (err) => {
                 if (err) {
