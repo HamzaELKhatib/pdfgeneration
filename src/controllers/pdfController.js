@@ -1,5 +1,6 @@
 const generatePdf = require('../utils/pdfGenerator');
 const fs = require('fs');
+const path = require('path');
 
 const generatePdfController = async (ctx) => {
     try {
@@ -15,6 +16,16 @@ const generatePdfController = async (ctx) => {
         ctx.set('Content-Type', 'application/pdf');
         ctx.set('Content-Disposition', 'attachment; filename=webpage.pdf');
         ctx.body = fs.createReadStream(filePath);
+
+        ctx.res.on('finish', () => {
+            fs.unlink(filePath, (err) => {
+                if (err) {
+                    console.error('Error deleting file:', err);
+                } else {
+                    console.log('File deleted:', filePath);
+                }
+            });
+        });
     } catch (error) {
         console.error('Error generating PDF:', error);
         ctx.status = 500;
